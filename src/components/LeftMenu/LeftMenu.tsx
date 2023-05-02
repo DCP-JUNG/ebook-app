@@ -5,26 +5,28 @@ import { Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Pap
 
 interface LeftMenuProps {
     width: number;
+    appBarHeight: number;
 };
 
-const LeftMenu = ({width}: LeftMenuProps) => {
+const LeftMenu = ({width, appBarHeight}: LeftMenuProps) => {
 
     const menuItems = customRouteProvider.map((route, index) =>
-        <Link to={route.link}>
+        <Link key={`link-${index}`} to={route.link}>
             <ListItem key={`list-item-${index}`} disablePadding>
-                <ListItemButton>
-                    <ListItemIcon>
+                <ListItemButton key={`list-button-${index}`}>
+                    <ListItemIcon key={`list-icon-${index}`}>
                         {route.icon}
                     </ListItemIcon>
-                    <ListItemText primary={route.label} />
+                    <ListItemText key={`list-text-${index}`} primary={route.label} />
                 </ListItemButton>
             </ListItem>
         </Link>
     );
 
-    const paperSx: PaperProps = {
+    const paperSx : PaperProps = {
         sx:  {
-            width: width
+            width: width,
+            marginTop: `${appBarHeight}px`
         }
     };
 

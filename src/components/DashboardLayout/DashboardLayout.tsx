@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
+import { Box } from '@mui/material';
+import { Route, Routes } from 'react-router-dom';
 import CustomAppBar from '../CustomAppBar/CustomAppBar';
 import LeftMenu from '../LeftMenu/LeftMenu';
 import Content from '../Content/Content';
 import customRouteProvider from '../../utils/CustomRouteProvider';
-import { Box } from '@mui/material';
-import { Route, Routes } from 'react-router-dom';
 
 const DashboardLayout = () => {
 
-    const maxLeftMenuWidth = 200;
+    const maxLeftMenuWidth = 250;
     const minLeftMenuWidth = 70;
+    const appBarHeight = 70;
 
     const [currentLeftMenuWidth, setCurrentLeftMenuWidth] = useState(maxLeftMenuWidth);
-    const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(false);
+    const [isLeftMenuOpen, setIsLeftMenuOpen] = useState(true);
 
     const onLeftMenuBtnClick = () => {
         const newWidth = isLeftMenuOpen ? minLeftMenuWidth : maxLeftMenuWidth;
@@ -22,18 +23,18 @@ const DashboardLayout = () => {
         setIsLeftMenuOpen(isOpen);
     };
 
-    const routes = customRouteProvider.map(route => 
-        <Route path={route.link} element={<Content marginLeft={currentLeftMenuWidth} title={route.pageTitle} children={route.content} />} />
+    const routes = customRouteProvider.map((route, index) => 
+        <Route key={index} path={route.link} element={<Content drawerWidth={currentLeftMenuWidth} appBarHeight={appBarHeight} title={route.pageTitle} children={route.content} />} />
     );
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <CustomAppBar marginLeft={currentLeftMenuWidth}/>
-            <LeftMenu width={currentLeftMenuWidth}/>
+        <>
+            <CustomAppBar isLeftMenuOpen={isLeftMenuOpen} height={appBarHeight} onMenuBtnClck={onLeftMenuBtnClick}/>
+            <LeftMenu width={currentLeftMenuWidth} appBarHeight={appBarHeight}/>
             <Routes>
                 {routes}
             </Routes>
-        </Box>
+        </>
     );
 };
 

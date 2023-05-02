@@ -1,15 +1,23 @@
-import { Box, Typography } from '@mui/material';
+import { Box, SxProps, Theme, Typography } from '@mui/material';
 import React from 'react';
 
 interface ContentProps {
-    marginLeft: number;
+    drawerWidth: number;
+    appBarHeight: number;
     title: string;
     children: JSX.Element;
 }
 
-const Content = ({marginLeft, title, children}: ContentProps) => {
+const Content = ({drawerWidth, appBarHeight, title, children}: ContentProps) => {
+
+    const boxSx: SxProps<Theme>  = {
+        marginTop: `${appBarHeight + 10}px`,
+        width: { sm:  `calc(100% - ${drawerWidth}px)` },
+        ml: { sm: `${drawerWidth}px` }
+    };
+
     return (
-        <Box>
+        <Box sx={boxSx} >
             <Typography variant="h6">{title}</Typography>
             {children}
         </Box>

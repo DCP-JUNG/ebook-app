@@ -14,7 +14,8 @@ const customTheme = createTheme({
             dark: '#00867d',
             contrastText: '#000',
         },
-    },
-});
+    }
+  }
+);
 
 export default customTheme;

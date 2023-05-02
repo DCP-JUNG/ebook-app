@@ -7,9 +7,11 @@ import DashboardLayout from './components/DashboardLayout/DashboardLayout';
 const App = () => {
   return (
     <ThemeProvider theme={customTheme}>
-      <BrowserRouter>
-        <DashboardLayout />
-      </BrowserRouter>
+      <React.StrictMode>
+        <BrowserRouter>
+          <DashboardLayout />
+        </BrowserRouter>
+      </React.StrictMode>
     </ThemeProvider>
   );
 };
