@@ -1,8 +1,7 @@
 import { TableCell, TableRow } from "@mui/material";
 import StyledTableRow from "../../../../components/StyledTableRow/StyledTableRow";
 import CustomFetcher, { FetchManyResult } from "../../../../utils/Fetcher";
-import StoryData from "../../datas/StoryData";
-import { Link } from "react-router-dom";
+import StoryData from "../../../Stories/datas/StoryData";
 
 export const tableColumns = 
     <TableRow>
@@ -14,9 +13,7 @@ export const tableColumns =
 export const tableRows = (datas: StoryData[]) => {
     return datas.map(data =>     
         <StyledTableRow key={data.id}>
-            <TableCell component="th" scope="row">
-                <Link to={`${data.id}`}>{data.id}</Link>
-            </TableCell>
+            <TableCell component="th" scope="row">{data.id}</TableCell>
             <TableCell component="th" scope="row">{data.title}</TableCell>
             <TableCell component="th" scope="row">{data.createdAt.toLocaleString()}</TableCell>
         </StyledTableRow>

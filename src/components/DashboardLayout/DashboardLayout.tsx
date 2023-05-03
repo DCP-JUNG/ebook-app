@@ -24,7 +24,7 @@ const DashboardLayout = () => {
     };
 
     const routes = customRouteProvider.map((route, index) => 
-        <Route key={index} path={route.link} element={<Content drawerWidth={currentLeftMenuWidth} appBarHeight={appBarHeight} title={route.pageTitle} children={route.content} />} />
+        <Route key={index} path={route.routeProps.path} element={<Content drawerWidth={currentLeftMenuWidth} appBarHeight={appBarHeight} title={route.pageTitle} children={route.routeProps.element} />} />   
     );
 
     return (

@@ -10,14 +10,14 @@ interface LeftMenuProps {
 
 const LeftMenu = ({width, appBarHeight}: LeftMenuProps) => {
 
-    const menuItems = customRouteProvider.map((route, index) =>
-        <Link key={`link-${index}`} to={route.link}>
+    const menuItems = customRouteProvider.filter(route => route.isVisibleOnLeftMenu).map((route, index) =>
+        <Link key={`link-${index}`} to={route.routeProps.path!}>
             <ListItem key={`list-item-${index}`} disablePadding>
                 <ListItemButton key={`list-button-${index}`}>
                     <ListItemIcon key={`list-icon-${index}`}>
-                        {route.icon}
+                        {route.menuIcon}
                     </ListItemIcon>
-                    <ListItemText key={`list-text-${index}`} primary={route.label} />
+                    <ListItemText key={`list-text-${index}`} primary={route.menuLabel} />
                 </ListItemButton>
             </ListItem>
         </Link>

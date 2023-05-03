@@ -5,7 +5,7 @@ interface ContentProps {
     drawerWidth: number;
     appBarHeight: number;
     title: string;
-    children: JSX.Element;
+    children: React.ReactNode;
 }
 
 const Content = ({drawerWidth, appBarHeight, title, children}: ContentProps) => {

@@ -2,8 +2,8 @@ import { Paper, Table, TableBody, TableContainer, TableHead } from '@mui/materia
 import getDatas, { tableColumns, tableRows } from './StoriesColumns';
 import { useEffect, useState } from 'react';
 
-const StoriesTable = () => {
-   const [rows, setRows] = useState<JSX.Element[]>([]);
+const StoryImagePromptsTable = () => {
+    const [rows, setRows] = useState<JSX.Element[]>([]);
 
     useEffect(() => {
         const loadDatas = async () => {
@@ -28,4 +28,4 @@ const StoriesTable = () => {
     );
 };
 
-export default StoriesTable;
+export default StoryImagePromptsTable;

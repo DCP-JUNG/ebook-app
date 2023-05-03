@@ -1,11 +1,17 @@
-import { StoryData } from "../views/Stories/components/storiesTable/StoriesColumns";
+import NotFound from "../views/NotFound/NotFound";
 
 let instance: CustomFetcher; 
 
 export interface FetchManyResult<T> {
     datas?: T[],
     success: boolean,
-    errorMessage?: JSX.Element;
+    errorPage?: JSX.Element;
+}
+
+export interface FetchOneResult<T> {
+    data?: T,
+    success: boolean,
+    errorPage?: JSX.Element;
 }
 
 class CustomFetcher {
@@ -19,7 +25,7 @@ class CustomFetcher {
 
         CustomFetcher.#isInternalConstructing = false;
         instance = this;
-        this.#baseUrl = 'http://localhost:5080';
+        this.#baseUrl = 'https://localhost:7270';
     }
 
     static create() {
@@ -33,7 +39,7 @@ class CustomFetcher {
             if (!response.ok) {
                 return {
                     success: false,
-                    errorMessage: <p>Error</p>
+                    errorPage: <NotFound />
                 };
             }
 
@@ -46,7 +52,31 @@ class CustomFetcher {
         catch (error){
             return {
                 success: false,
-                errorMessage: <p>Error</p>
+                errorPage: <NotFound />
+            };
+        }
+    };
+
+    getOneAsync = async<T, >(resource: string): Promise<FetchOneResult<T>> => {
+        try {
+            const response = await fetch(this.#baseUrl + "/" + resource);
+            if (!response.ok) {
+                return {
+                    success: false,
+                    errorPage: <NotFound />
+                };
+            }
+
+            const data = await response.json() as T;
+            return {
+                data: data,
+                success: true
+            };
+        }
+        catch (error){
+            return {
+                success: false,
+                errorPage: <NotFound />
             };
         }
     };
