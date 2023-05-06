@@ -1,23 +1,13 @@
 import { Paper, Table, TableBody, TableContainer, TableHead } from '@mui/material';
-import getDatas, { tableColumns, tableRows } from './StoriesColumns';
-import { useEffect, useState } from 'react';
+import tableRows, { tableColumns } from './StoriesImagePromptColumns';
+import StoryImagePromptData from '../../../Stories/datas/StoryImagePrompt';
 
-const StoryImagePromptsTable = () => {
-    const [rows, setRows] = useState<JSX.Element[]>([]);
+interface StoryImagePromptsTableProps {
+    storyImagePrompts: StoryImagePromptData[];
+};
 
-    useEffect(() => {
-        const loadDatas = async () => {
-
-            const fetchManyResult = await getDatas();
-            if (fetchManyResult.success) {
-                const localRows = tableRows(fetchManyResult.datas!);
-                setRows(localRows);
-            }
-        }
-
-        loadDatas();
-    }, []);
-
+const StoryImagePromptsTable = ({storyImagePrompts}: StoryImagePromptsTableProps) => {
+    const rows = tableRows(storyImagePrompts);
     return (
         <TableContainer component={Paper} sx={{ mt: '10px'}} >
             <Table sx={{ minWidth: 650 }} aria-label="simple table">

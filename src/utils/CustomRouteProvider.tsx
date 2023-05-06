@@ -3,10 +3,11 @@ import HomeIcon from '@mui/icons-material/Home';
 import Stories from '../views/Stories/Stories';
 import StoryDetails from '../views/StoryDetails/StoryDetails';
 import { PathRouteProps } from 'react-router-dom';
+import NewStory from '../views/NewStory/NewStory';
 
 interface RouteData {
-    menuLabel: string;
-    menuIcon: JSX.Element;
+    menuLabel?: string;
+    menuIcon?: JSX.Element;
     pageTitle: string;
     isVisibleOnLeftMenu: boolean;
     routeProps: PathRouteProps;
@@ -14,24 +15,29 @@ interface RouteData {
 
 const customRouteProvider : RouteData[] = [
     {  
-        menuLabel: 'Home', menuIcon: <HomeIcon />, pageTitle: 'Home', isVisibleOnLeftMenu: true, routeProps: {
+        menuLabel: 'Accueil', menuIcon: <HomeIcon />, pageTitle: 'Accueil', isVisibleOnLeftMenu: true, routeProps: {
             element: <p>Home page!</p>,
             path: '/'
         }
     },
     {  
-        menuLabel: 'Stories', menuIcon: <AutoStoriesIcon />, pageTitle: 'Stories', isVisibleOnLeftMenu: true, routeProps: {
+        menuLabel: 'Histoires', menuIcon: <AutoStoriesIcon />, pageTitle: 'Histoires', isVisibleOnLeftMenu: true, routeProps: {
             element: <Stories />,
             path: '/stories'
         }
     },
     {  
-        menuLabel: 'Story detail', menuIcon: <AutoStoriesIcon />, pageTitle: 'Story detail', isVisibleOnLeftMenu: false, routeProps: {
+        pageTitle: 'Détail d\'histoire', isVisibleOnLeftMenu: false, routeProps: {
             element: <StoryDetails />,
             path: '/stories/:storyId',
         }
     },
-
+    {  
+        pageTitle: 'Nouvelle histoire', isVisibleOnLeftMenu: false, routeProps: {
+            element: <NewStory />,
+            path: '/stories/create',
+        }
+    },
 ];
 
 export default customRouteProvider;
