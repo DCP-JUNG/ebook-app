@@ -8,19 +8,19 @@ import PromptStepProps from '../interfaces/promptStep';
 
 const SelectBasePromptStep = ({setIsValid}: PromptStepProps) => {
 
-    const defaultMenuItem = <MenuItem value="none">None</MenuItem>;
+    const defaultMenuItem = <MenuItem key='menu-item-none' value="none">None</MenuItem>;
     const [basePromps, setBasePromps] = useState<StoryPrompt[] | undefined>(undefined);
-    const [menuItems, setMenuItems] = useState<React.ReactNode[]>([]);
+    const [menuItems, setMenuItems] = useState<React.ReactNode[]>([defaultMenuItem]);
     const [errorPage, setErrorPage] = useState<JSX.Element | undefined>(undefined);
-    const [selectedPrompt, setSelectedPrompt] = useState<string | undefined>(undefined);
+    const [selectedPrompt, setSelectedPrompt] = useState<string | undefined>('none');
 
     useEffect(() => {
+
+        setIsValid(false);
 
         const getBasePrompts = async () => {
             const fetcher = Fetcher.create();
             const storyPromptsResponse = await fetcher.getManyAsync<StoryPrompt>('story-prompts');
-
-            setSelectedPrompt('none');
 
             if (!storyPromptsResponse.success){
                 setBasePromps(undefined);
@@ -32,7 +32,7 @@ const SelectBasePromptStep = ({setIsValid}: PromptStepProps) => {
             setBasePromps(storyPromptsResponse.datas!);
             setErrorPage(undefined);  
 
-            const newMenuItems = storyPromptsResponse.datas!.map(storyPrompt => <MenuItem value={storyPrompt.id}>{storyPrompt.name}</MenuItem>);
+            const newMenuItems = storyPromptsResponse.datas!.map((storyPrompt, index) => <MenuItem key={`menu-item-${index}`} value={storyPrompt.id}>{storyPrompt.name}</MenuItem>);
             newMenuItems.push(defaultMenuItem);
             setMenuItems(newMenuItems);
         };

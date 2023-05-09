@@ -1,6 +1,6 @@
 import { Box, Step, StepProps, Stepper } from '@mui/material';
 import React, { useState } from 'react';
-import StepButton from './StepButton';
+import StepButtons from './StepButtons';
 import FinishStep from './FinishStep';
 
 export interface SimpleStepData {
@@ -15,27 +15,12 @@ export interface SimpleStepsProps {
 
 const SimpleSteps = ({stepsData}: SimpleStepsProps) => {
     const [activeStep, setActiveStep] = useState(0);
+    const handleNext = () =>  setActiveStep((prevActiveStep) => prevActiveStep + (!isValid ? 0 : 1));
+    const handleBack = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    const handleReset = () => setActiveStep(0);
 
-    const handleNext = () => {
-
-        if(!stepsData[activeStep].onValidate()) {
-            return;
-        }
-
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-    
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(0);
-    };
-
-    const steps = stepsData.map(data =>
-        <Step {...data.stepProps}>{data.stepProps.children}</Step>
-    );
+    const isValid = stepsData[activeStep]?.onValidate() ?? false;
+    const steps = stepsData.map((data, index) => <Step key={`step-${index}`} {...data.stepProps}>{data.stepProps.children}</Step>);
 
     return (
         <Box sx={{mt: '10px'}}>
@@ -47,7 +32,7 @@ const SimpleSteps = ({stepsData}: SimpleStepsProps) => {
                 (
                     <React.Fragment>
                         {stepsData[activeStep].children}
-                        <StepButton activeStep={activeStep} stepsLength={steps.length} handleBack={handleBack} handleNext={handleNext} />
+                        <StepButtons activeStep={activeStep} stepsLength={steps.length} handleBack={handleBack} handleNext={handleNext} canGoNext={isValid}/>
                     </React.Fragment>
                 )
             }
