@@ -4,15 +4,19 @@ import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import Fetcher from '../../../utils/Fetcher';
 import Textbox from '../../../components/TextBox/Textbox';
-import PromptStepProps from '../interfaces/promptStep';
 
-const SelectBasePromptStep = ({setIsValid}: PromptStepProps) => {
+export interface SelectBasePromptStepProps {
+    setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
+    setSelectedTemplate: React.Dispatch<React.SetStateAction<StoryPrompt | undefined>>;
+};
+
+const SelectBasePromptStep = ({setIsValid, setSelectedTemplate}: SelectBasePromptStepProps) => {
 
     const defaultMenuItem = <MenuItem key='menu-item-none' value="none">None</MenuItem>;
-    const [basePromps, setBasePromps] = useState<StoryPrompt[] | undefined>(undefined);
+    const [baseTemplates, setBaseTemplates] = useState<StoryPrompt[] | undefined>(undefined);
     const [menuItems, setMenuItems] = useState<React.ReactNode[]>([defaultMenuItem]);
     const [errorPage, setErrorPage] = useState<JSX.Element | undefined>(undefined);
-    const [selectedPrompt, setSelectedPrompt] = useState<string | undefined>('none');
+    const [selectedMenuItem, setSelectedMenuItem] = useState<string | undefined>('none');
 
     useEffect(() => {
 
@@ -23,13 +27,13 @@ const SelectBasePromptStep = ({setIsValid}: PromptStepProps) => {
             const storyPromptsResponse = await fetcher.getManyAsync<StoryPrompt>('story-prompts');
 
             if (!storyPromptsResponse.success){
-                setBasePromps(undefined);
+                setBaseTemplates(undefined);
                 setErrorPage(storyPromptsResponse.errorPage!);   
                 setMenuItems([defaultMenuItem]);      
                 return;
             }
 
-            setBasePromps(storyPromptsResponse.datas!);
+            setBaseTemplates(storyPromptsResponse.datas!);
             setErrorPage(undefined);  
 
             const newMenuItems = storyPromptsResponse.datas!.map((storyPrompt, index) => <MenuItem key={`menu-item-${index}`} value={storyPrompt.id}>{storyPrompt.name}</MenuItem>);
@@ -41,8 +45,14 @@ const SelectBasePromptStep = ({setIsValid}: PromptStepProps) => {
     }, []);
 
     const onSelectPromptChange = (event: SelectChangeEvent<string>) => {
-        setSelectedPrompt(event.target.value);   
-        setIsValid(event.target.value !== 'none');
+        setSelectedMenuItem(event.target.value);  
+        const isValid = event.target.value !== 'none'; 
+        setIsValid(isValid);
+
+        if (isValid) {
+            const template = baseTemplates?.find(template => template.id == event.target.value);
+            setSelectedTemplate(template!);
+        }
     };
 
     if (errorPage !== undefined) {
@@ -55,18 +65,17 @@ const SelectBasePromptStep = ({setIsValid}: PromptStepProps) => {
                 <Grid xs={4}>
                     <FormControl fullWidth sx={{ mt: '30px', mb: '30px' }}>
                         <InputLabel id="demo-simple-select-label">Prompts</InputLabel>
-                        <Select value={selectedPrompt} label="Prompt" onChange={onSelectPromptChange}>
+                        <Select value={selectedMenuItem} label="Prompt" onChange={onSelectPromptChange}>
                             {menuItems}
                         </Select>
                     </FormControl>
                 </Grid>
                 <Grid xs={8}>       
                 { 
-                    basePromps !== undefined && 
+                    baseTemplates !== undefined && 
                     <Box sx={{ mt: '30px' }}>
-                        <Typography sx={{ whiteSpace: 'pre-line' }} variant='body1'>{basePromps.find(storyPrompt => storyPrompt.id === selectedPrompt!)?.description}</Typography>
                         <Textbox>
-                            <Typography sx={{ whiteSpace: 'pre-line' }} variant='body1'>{basePromps.find(storyPrompt => storyPrompt.id === selectedPrompt!)?.prompt}</Typography>
+                            <Typography sx={{ whiteSpace: 'pre-line' }} variant='body1'>{baseTemplates.find(storyPrompt => storyPrompt.id === selectedMenuItem!)?.prompt}</Typography>
                         </Textbox>
                     </Box>
                 }       
