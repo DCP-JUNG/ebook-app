@@ -4,6 +4,7 @@ import StoryPrompt from '../datas/StoryPrompt';
 import Textbox from '../../../components/TextBox/Textbox';
 import Theme from '../../Themes/datas/Theme';
 import Fetcher from '../../../utils/Fetcher';
+import CopyToClipboardButton from '../../../components/CopyToClipboardButton/CopyToClipboardButton';
 
 export interface CustomizeBasePromptStepProps {
     setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
@@ -38,7 +39,7 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
             const response = await fetcher.getManyAsync<Theme>("themes");
 
             if (!response.success) {
-
+                return;
             }
 
             const menuItems = response.datas!
@@ -49,7 +50,7 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
                 .filter(data => data.isForbidden)
                 .map((data, index) => 
                     <MenuItem key={`menu-forbidden-item-index-${index}`} value={data.id}>{data.name}
-                        <Checkbox checked={response.datas!.indexOf(data) > -1} />
+                        <Checkbox checked={isForbiddenThemeChecked(data)} />
                     </MenuItem>
                 );
 
@@ -59,24 +60,50 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
         };
 
         getThemes();
-    }, []);
-    
+    }, [forbiddenThemeSelectedValue]);
+
+    const isForbiddenThemeChecked = (theme: Theme) : boolean => {
+        return forbiddenThemeSelectedValue.indexOf(theme.id) > -1;
+    }    
 
     const onThemeSelectedValueChange = (event:  SelectChangeEvent<string>) => {
         setThemeSelectedValue(event.target.value);
     }
 
     const onForbiddenThemeSelectedValueChange = (event:  SelectChangeEvent<string[]>) => {
-        setForbiddenThemeSelectedValue( typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value);
+        setForbiddenThemeSelectedValue(typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value);
     }
 
     const onForbiddenThemeDialogClosed = () => {
         setIsForbiddenThemeDialogOpen(false);
+        changeFinalPrompt();
     };
 
     const onThemeDialogClosed = () => {
         setIsThemeDialogOpen(false);
+        changeFinalPrompt();
     };
+
+    const changeFinalPrompt = () => {
+        const  [isThemeSelected, isForbiddenThemeSelected, isOk] = isValid();
+        const finalPrompt = selectedTemplate.prompt
+            .replace(new RegExp(themeStr, "g"), isThemeSelected ? themes.find(theme => theme.id === themeSelectedValue)?.name! : '')
+            .replace(new RegExp(forbiddenThemesStr, "g"), isForbiddenThemeSelected ? themes.filter(theme => forbiddenThemeSelectedValue.includes(theme.id)).map(theme => theme.name).join(', ') : '')
+        ;
+
+        setFinalPrompt(finalPrompt);
+        setIsValid(isOk);
+    }
+
+    const isValid = () : [isThemeSelected: boolean, isForbiddenSelected: boolean, isValid: boolean] => {
+        const isThemeSelected = themeSelectedValue !== '' && themeSelectedValue !== undefined && themeSelectedValue !== null;
+        const isForbiddenSelected = forbiddenThemeSelectedValue.length > 0;
+        return [
+            isThemeSelected,
+            isForbiddenSelected,
+            isThemeSelected && isForbiddenSelected
+        ];
+    }
 
     return (
         <>
@@ -89,6 +116,7 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
                 <Textbox>
                     <Typography sx={{ whiteSpace: 'pre-line' }} variant='body1'>{finalPrompt}</Typography>
                 </Textbox>
+                <CopyToClipboardButton copyValue={finalPrompt}/>
             </Box>
 
             <Dialog onClose={onThemeDialogClosed} open={isThemeDialogOpen}>
@@ -107,7 +135,11 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
                     <InputLabel>Themes</InputLabel>
                     <Select key="forbbiden-themes-select" 
                         multiple 
-                        renderValue={(selected: string | string[]) => typeof selected === 'string' ? selected : selected.join(', ')} 
+                        renderValue={(selected: string[]) => {
+                                const selectedThemes =  themes.filter(theme => selected.includes(theme.id));
+                                return selectedThemes.map(theme => theme.name).join(', ');
+                            }
+                        } 
                         value={forbiddenThemeSelectedValue} label="Themes interdits" 
                         onChange={onForbiddenThemeSelectedValueChange}>
                         {forbiddenThemeMenuItems}
