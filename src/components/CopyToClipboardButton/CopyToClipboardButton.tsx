@@ -3,9 +3,10 @@ import React, { useState } from 'react';
 
 interface CopyToClipboardButtonProps {
     copyValue: string;
+    disabled: boolean;
 }
 
-const CopyToClipboardButton = ({copyValue}: CopyToClipboardButtonProps) => {
+const CopyToClipboardButton = ({copyValue, disabled}: CopyToClipboardButtonProps) => {
     const [open, setOpen] = useState(false)
     const handleClick = () => {
       setOpen(true)
@@ -14,7 +15,7 @@ const CopyToClipboardButton = ({copyValue}: CopyToClipboardButtonProps) => {
 
     return (
        <>
-          <Button variant="contained" onClick={handleClick}>Copy</Button>
+          <Button disabled={disabled} variant="contained" onClick={handleClick}>Copy</Button>
           <Snackbar
             open={open}
             onClose={() => setOpen(false)}

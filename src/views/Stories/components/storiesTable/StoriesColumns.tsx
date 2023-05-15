@@ -1,17 +1,20 @@
-import { TableCell, TableRow } from "@mui/material";
+import { IconButton, TableCell, TableRow } from "@mui/material";
+import { Link } from "react-router-dom";
 import StyledTableRow from "../../../../components/StyledTableRow/StyledTableRow";
 import CustomFetcher, { FetchManyResult } from "../../../../utils/Fetcher";
 import StoryData from "../../datas/StoryData";
-import { Link } from "react-router-dom";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 export const tableColumns = 
     <TableRow>
         <TableCell align="left">Id</TableCell>
         <TableCell align="left">Titre</TableCell>
         <TableCell align="left">Créé à</TableCell>
+        <TableCell align="left">Actions</TableCell>
     </TableRow>;
+    
 
-export const tableRows = (datas: StoryData[]) => {
+export const tableRows = (datas: StoryData[], onDelete: (id: string) => void) => {
     return datas.map(data =>     
         <StyledTableRow key={data.id}>
             <TableCell component="th" scope="row">
@@ -19,6 +22,10 @@ export const tableRows = (datas: StoryData[]) => {
             </TableCell>
             <TableCell component="th" scope="row">{data.title}</TableCell>
             <TableCell component="th" scope="row">{data.createdAt.toLocaleString()}</TableCell>
+            <TableCell component="th" scope="row">{
+                <IconButton aria-label="delete" onClick={() => onDelete(data.id)}>
+                    <DeleteIcon />
+                </ IconButton>}</TableCell>
         </StyledTableRow>
     )
 };

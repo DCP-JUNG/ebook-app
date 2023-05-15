@@ -92,6 +92,7 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
         ;
 
         setFinalPrompt(finalPrompt);
+        setPrompt(finalPrompt);
         setIsValid(isOk);
     }
 
@@ -116,7 +117,6 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
                 <Textbox>
                     <Typography sx={{ whiteSpace: 'pre-line' }} variant='body1'>{finalPrompt}</Typography>
                 </Textbox>
-                <CopyToClipboardButton copyValue={finalPrompt}/>
             </Box>
 
             <Dialog onClose={onThemeDialogClosed} open={isThemeDialogOpen}>
