@@ -4,9 +4,18 @@ import MyTableBody, { MyTableBodyProps } from '../MyTableBody/MyTableBody';
 import AddIcon from '@mui/icons-material/Add';
 import { Box, Button, CircularProgress, Paper, Table, TableContainer, TablePagination } from '@mui/material';
 import { Link } from 'react-router-dom';
+import FilterDialog, { FilterDialogProps } from '../FilterDialog/FilterDialog';
+
+export interface TableFilterProps {
+    filterDialogProps: FilterDialogProps;
+    filter: string;
+    setFilter: React.Dispatch<React.SetStateAction<string>>;
+}
 
 export interface MyTableProps {
-    useDatas: () => [boolean, MyTableDatas];
+    hasFilters?: boolean;
+    filterProps?: TableFilterProps;
+    useDatas: (filter?: string) => [boolean, MyTableDatas];
 };
 
 export interface MyTableDatas {
@@ -14,8 +23,8 @@ export interface MyTableDatas {
     tableBodyProps: MyTableBodyProps;
 }
 
-const MyTable = ({useDatas}: MyTableProps) => {
-    const [isLoading, tableProps] = useDatas();
+const MyTable = ({useDatas, hasFilters = false, filterProps}: MyTableProps) => {
+    const [isLoading, tableProps] = useDatas(filterProps?.filter);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentRowsPerPage, setCurrentRowsPerPage] = useState<number>(10);
 
@@ -31,8 +40,9 @@ const MyTable = ({useDatas}: MyTableProps) => {
     return (
         <>
             <Link to={"create"}>
-                <Button variant="outlined" startIcon={<AddIcon />} sx={{mt: '10px', mb: '10px' }}>Nouveau</Button>
+                <Button variant="outlined" startIcon={<AddIcon />} sx={{mt: '10px', mb: '10px', mr: '10px' }}>Nouveau</Button>
             </Link>
+            { hasFilters && <FilterDialog {...filterProps?.filterDialogProps!} />}
             { 
                 isLoading && 
                 <Box sx={{display: 'flex', justifyContent: 'center'}}>
