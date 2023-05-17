@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Box, Button, Checkbox, Dialog, DialogTitle, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
-import StoryPrompt from '../datas/StoryPrompt';
 import Textbox from '../../../components/TextBox/Textbox';
-import Theme from '../../Themes/datas/Theme';
+import ThemeData from '../../Themes/datas/ThemeData';
 import Fetcher from '../../../utils/Fetcher';
-import CopyToClipboardButton from '../../../components/CopyToClipboardButton/CopyToClipboardButton';
+import StoryPrompt from '../../StoryPrompts/data/StoryPromptData';
 
 export interface CustomizeBasePromptStepProps {
     setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,7 +13,7 @@ export interface CustomizeBasePromptStepProps {
 
 const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: CustomizeBasePromptStepProps) => {
     
-    const [themes, setThemes] = useState<Theme[]>([]);
+    const [themes, setThemes] = useState<ThemeData[]>([]);
 
     const [themeMenuItems, setThemeMenuItems] = useState<React.ReactNode[]>([]);
     const [themeSelectedValue, setThemeSelectedValue] = useState<string>('');
@@ -36,7 +35,7 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
     useEffect(() => {
         const getThemes  = async () => {
             const fetcher = Fetcher.create();
-            const response = await fetcher.getManyAsync<Theme>("themes");
+            const response = await fetcher.getManyAsync<ThemeData>("themes");
 
             if (!response.success) {
                 return;
@@ -62,7 +61,7 @@ const CustomizeBasePromptStep = ({setIsValid, setPrompt, selectedTemplate}: Cust
         getThemes();
     }, [forbiddenThemeSelectedValue]);
 
-    const isForbiddenThemeChecked = (theme: Theme) : boolean => {
+    const isForbiddenThemeChecked = (theme: ThemeData) : boolean => {
         return forbiddenThemeSelectedValue.indexOf(theme.id) > -1;
     }    
 

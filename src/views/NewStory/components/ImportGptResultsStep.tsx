@@ -31,7 +31,7 @@ const ImportGptResultsStep = ({setIsValid, setGptPromptResult, prompt} : ImportG
                 Allez sur chat openai pour coller le text de l'étape précédente : <Link href="https://chat.openai.com/" target="_blank">Chat.Openai</Link>
             </Typography>
             <Textbox>    
-                <TextField sx={{ minWidth: 1200}} label="Resultat" multiline rows={30} onChange={onTextFieldChange}/>
+                <TextField sx={{ minWidth: 1200}} label="Resultat" multiline rows={30} onChange={onTextFieldChange} value={textFieldValue}/>
             </Textbox>
         </Box>
     );

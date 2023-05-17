@@ -5,7 +5,7 @@ import { useState } from "react";
 import CustomizeBasePromptStep from "./components/CustomizeBasePromptStep";
 import ImportGptResultsStep from "./components/ImportGptResultsStep";
 import FinalizeStoryStep from "./components/FinalizeStoryStep";
-import StoryPrompt from "./datas/StoryPrompt";
+import StoryPrompt from "../StoryPrompts/data/StoryPromptData";
 
 const NewStory = () => {
 

@@ -9,15 +9,15 @@ interface CustomAppBarProps {
 
 const CustomAppBar = ({height, isLeftMenuOpen, onMenuBtnClck: onMenuBtnClick}: CustomAppBarProps) => {
     return (
-        <AppBar position='fixed' color='primary' sx={{ height: `${height}px` }}>
+        <AppBar position='fixed' color='secondary' sx={{ height: `${height}px` }}>
             <Toolbar>
                 {
                     isLeftMenuOpen &&
-                    <Typography variant="h6">
+                    <Typography color='Background' variant='h6'>
                         Ebook Application
                     </Typography>
                 }
-                <IconButton size="large" edge="start" color="inherit" aria-label="menu" onClick={onMenuBtnClick} >
+                <IconButton color="primary" size="large" edge="start" aria-label="menu" onClick={onMenuBtnClick} >
                     <MenuIcon />
                 </IconButton>   
             </Toolbar>     

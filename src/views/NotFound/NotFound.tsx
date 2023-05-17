@@ -9,13 +9,13 @@ const NotFound = () => {
                 404
             </Typography>
             <Typography variant="h4" component="h2" gutterBottom>
-                Oops! The page you are looking for cannot be found.
+                Oups ! La page que vous cherchez est introuvable.
             </Typography>
             <Typography variant="body1" gutterBottom>
-                The page may have been removed, renamed, or is temporarily unavailable.
+                La page peut avoir été supprimée, renommée ou est temporairement indisponible.
             </Typography>
             <Button variant="contained" component={RouterLink} to="/">
-                Go back to home
+                Retour à la page principale
             </Button>
         </Box>
       );

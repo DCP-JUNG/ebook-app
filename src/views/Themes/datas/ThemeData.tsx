@@ -1,4 +1,4 @@
-export default interface Theme {
+export default interface ThemeData {
     id: string;
     name: string;
     description: string;

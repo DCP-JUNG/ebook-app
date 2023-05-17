@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import StoryPrompt from '../datas/StoryPrompt';
 import Grid from '@mui/material/Unstable_Grid2'; // Grid version 2
 import { Box, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Typography } from '@mui/material';
 import Fetcher from '../../../utils/Fetcher';
 import Textbox from '../../../components/TextBox/Textbox';
+import StoryPromptData from '../../StoryPrompts/data/StoryPromptData';
 
 export interface SelectBasePromptStepProps {
     setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
-    setSelectedTemplate: React.Dispatch<React.SetStateAction<StoryPrompt | undefined>>;
+    setSelectedTemplate: React.Dispatch<React.SetStateAction<StoryPromptData | undefined>>;
 };
 
 const SelectBasePromptStep = ({setIsValid, setSelectedTemplate}: SelectBasePromptStepProps) => {
 
     const defaultMenuItem = <MenuItem key='menu-item-none' value="none">None</MenuItem>;
-    const [baseTemplates, setBaseTemplates] = useState<StoryPrompt[] | undefined>(undefined);
+    const [baseTemplates, setBaseTemplates] = useState<StoryPromptData[] | undefined>(undefined);
     const [menuItems, setMenuItems] = useState<React.ReactNode[]>([defaultMenuItem]);
     const [errorPage, setErrorPage] = useState<JSX.Element | undefined>(undefined);
     const [selectedMenuItem, setSelectedMenuItem] = useState<string | undefined>('none');
@@ -24,7 +24,7 @@ const SelectBasePromptStep = ({setIsValid, setSelectedTemplate}: SelectBasePromp
 
         const getBasePrompts = async () => {
             const fetcher = Fetcher.create();
-            const storyPromptsResponse = await fetcher.getManyAsync<StoryPrompt>('story-prompts');
+            const storyPromptsResponse = await fetcher.getManyAsync<StoryPromptData>('story-prompts');
 
             if (!storyPromptsResponse.success){
                 setBaseTemplates(undefined);
