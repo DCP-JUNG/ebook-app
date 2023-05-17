@@ -11,7 +11,7 @@ export interface UseDataProps<T> {
     getTableBody: (datas: T[]) => MyTableBodyProps;
 }
 
-const useData = <T, >({tableHeadProps, getTableBody, resourceName, filter}: UseDataProps<T>) : [boolean, MyTableDatas] => {
+const useData = <T, >({tableHeadProps, getTableBody, resourceName, filter = ''}: UseDataProps<T>) : [boolean, MyTableDatas] => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [tableProps, setTableProps] = useState<MyTableDatas>({
         tableHeaderProps: tableHeadProps,

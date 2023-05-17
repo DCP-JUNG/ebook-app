@@ -1,9 +1,9 @@
 import React from 'react';
 import MyTable from '../../components/MyTable/MyTable';
-import useData from './hooks/useData';
+import useStoryData from './hooks/useStoryData';
 
 const Stories = () => {
-    return (<MyTable useDatas={useData}/>);
+    return (<MyTable useDatas={useStoryData}/>);
 };
 
 export default Stories;
