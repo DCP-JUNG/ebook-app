@@ -24,9 +24,15 @@ export interface MyTableDatas {
 }
 
 const MyTable = ({useDatas, hasFilters = false, filterProps}: MyTableProps) => {
-    const [isLoading, tableProps] = useDatas(filterProps?.filter);
     const [currentPage, setCurrentPage] = useState<number>(0);
     const [currentRowsPerPage, setCurrentRowsPerPage] = useState<number>(10);
+
+    const paginationFilterBase = filterProps?.filter === undefined ? '?' : '&';
+    const paginationFilter = `pageIndex=${currentPage}&pageSize=${currentRowsPerPage}`;
+    const finalFilter = filterProps?.filter ?? '' + paginationFilterBase + paginationFilter;
+
+    const [isLoading, tableProps] = useDatas(finalFilter);
+
 
     const onPageChange = (event: React.MouseEvent<HTMLButtonElement> | null, page: number) => {
         setCurrentPage(page);
@@ -49,23 +55,26 @@ const MyTable = ({useDatas, hasFilters = false, filterProps}: MyTableProps) => {
                     <CircularProgress />
                 </Box> 
             }
-            <TableContainer component={Paper} sx={{ mt: '10px'}} >
-                <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                    <MyTableHead {...tableProps.tableHeaderProps} />
-                    <MyTableBody {...tableProps.tableBodyProps}/>
-                    <TablePagination 
-                        count={tableProps.tableBodyProps.rowsProps.length} 
-                        page={currentPage} 
-                        rowsPerPage={currentRowsPerPage} 
-                        onPageChange={onPageChange}
-                        onRowsPerPageChange={onRowsPerPageChange}  
-                        rowsPerPageOptions={[10, 25, 50]}
-                        showFirstButton={true}
-                        showLastButton={true}
-                        labelRowsPerPage={"Lignes par pages"}
-                    />
-                </Table>
-            </TableContainer>
+            <Paper sx={{ width: '100%', mb: 2 }}>
+                <TableContainer component={Paper} sx={{ mt: '10px'}} >
+                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <MyTableHead {...tableProps.tableHeaderProps} />
+                        <MyTableBody {...tableProps.tableBodyProps}/>
+                    </Table>
+                </TableContainer>
+                <TablePagination 
+                    count={tableProps.tableBodyProps.rowsProps.length} 
+                    page={currentPage} 
+                    rowsPerPage={currentRowsPerPage} 
+                    onPageChange={onPageChange}
+                    onRowsPerPageChange={onRowsPerPageChange}  
+                    rowsPerPageOptions={[10, 25, 50]}
+                    showFirstButton={true}
+                    showLastButton={true}
+                    labelRowsPerPage={"Lignes par pages"}
+                    component="div"
+                />
+            </Paper>
         </>
     );
 };

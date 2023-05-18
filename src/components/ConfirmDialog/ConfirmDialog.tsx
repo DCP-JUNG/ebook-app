@@ -2,15 +2,15 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, Dialog
 import React from 'react';
 
 interface DeleteStoryDialogProps {
-    onDelete: () => void;
+    onApprove: () => void;
     question: string;
-    isDeleteDialogOpen: boolean;
-    setIsDeleteDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    isOpen: boolean;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const DeleteDialog = ({onDelete, question, isDeleteDialogOpen, setIsDeleteDialogOpen}: DeleteStoryDialogProps) => {
+const DeleteDialog = ({onApprove, question, isOpen, setIsOpen}: DeleteStoryDialogProps) => {
     return (
-        <Dialog open={isDeleteDialogOpen} onClose={() => setIsDeleteDialogOpen(false)} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+        <Dialog open={isOpen} onClose={() => setIsOpen(false)} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
             <DialogTitle id="alert-dialog-title">
                 Confirmez votre action
             </DialogTitle>
@@ -20,8 +20,8 @@ const DeleteDialog = ({onDelete, question, isDeleteDialogOpen, setIsDeleteDialog
                 </DialogContentText>
             </DialogContent>
             <DialogActions>
-                <Button onClick={() => setIsDeleteDialogOpen(false)}>Non</Button>
-                <Button onClick={() => onDelete()} autoFocus>
+                <Button key='no-btn' onClick={() => setIsOpen(false)}>Non</Button>
+                <Button key='yes-btn' onClick={() => onApprove()} autoFocus>
                     Oui
                 </Button>
             </DialogActions>

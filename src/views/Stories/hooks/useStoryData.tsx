@@ -31,7 +31,7 @@ const useStoryData = () : [boolean, MyTableDatas] => {
                         children: <Typography variant="body1">{data.createdAt.toLocaleString()}</Typography>
                     }
                 ],
-                hasLinkToDetails: false,
+                hasLinkToDetails: true,
                 resourcesName: resourceName
             }
         });

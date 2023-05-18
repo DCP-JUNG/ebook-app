@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
 import { MyTableDatas } from "../../../components/MyTable/MyTable";
 import { MyTableHeadProps } from "../../../components/MyTableHead/MyTableHead";
-import CustomFetcher from "../../../utils/Fetcher";
 import ThemeData from "../datas/ThemeData";
 import { MyTableBodyProps } from "../../../components/MyTableBody/MyTableBody";
 import { Typography } from "@mui/material";
